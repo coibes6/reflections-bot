@@ -1,6 +1,9 @@
+import os
 import zipfile
 
 zip_path_new = '/mnt/data/auto_reflections_bot_new_token.zip'
+
+os.makedirs('/mnt/data', exist_ok=True)  # Создаем папку, если её нет
 
 project_files_new = {
     'bot.py': """
@@ -68,4 +71,4 @@ with zipfile.ZipFile(zip_path_new, 'w') as zf:
     for filename, content in project_files_new.items():
         zf.writestr(filename, content)
 
-zip_path_new
+print(zip_path_new)
