@@ -1,4 +1,9 @@
+import zipfile
 
+zip_path_new = '/mnt/data/auto_reflections_bot_new_token.zip'
+
+project_files_new = {
+    'bot.py': """
 import os
 import logging
 from aiogram import Bot, Dispatcher, types
@@ -9,7 +14,7 @@ import openai
 
 logging.basicConfig(level=logging.INFO)
 
-BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
+BOT_TOKEN = "7866232548:AAEPApwZlsj-OyqVOtAMtKkLJM5gbCp9BlQ"
 CHANNEL_ID = os.getenv("TELEGRAM_CHANNEL_ID")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
@@ -20,7 +25,7 @@ openai.api_key = OPENAI_API_KEY
 scheduler = AsyncIOScheduler()
 
 async def generate_reflection():
-    prompt = ("Напиши философско-богословское размышление примерно на 150 слов.")
+    prompt = "Напиши философско-богословское размышление примерно на 150 слов."
     response = openai.Completion.create(
         engine="text-davinci-003",
         prompt=prompt,
@@ -48,4 +53,19 @@ async def main():
     await dp.start_polling(bot)
 
 if __name__ == "__main__":
+    import asyncio
     asyncio.run(main())
+""",
+    'requirements.txt': """
+aiogram==3.20.0.post0
+apscheduler==3.11.0
+openai==1.83.0
+python-dotenv==1.1.0
+""".strip()
+}
+
+with zipfile.ZipFile(zip_path_new, 'w') as zf:
+    for filename, content in project_files_new.items():
+        zf.writestr(filename, content)
+
+zip_path_new
